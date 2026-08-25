@@ -36,3 +36,7 @@ CM_STATUS_REGISTER.md   -> Registro de estados de configuración (Status Account
 ## Baseline actual
 
 - **v1.0.0** — Baseline aprobada: estructura + SRS v1 + código mínimo + prueba mínima.
+
+## Licencia
+
+Este proyecto se distribuye bajo licencia **MIT**. Ver [`LICENSE`](LICENSE).
