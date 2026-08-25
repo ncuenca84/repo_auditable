@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe Auditoría - Repo Auditable</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color:#1a1a1a; font-size:11px; line-height:1.45; }
+  h1 { font-size:20px; margin:0 0 2px; color:#0b3d63; }
+  h2 { font-size:14px; color:#0b3d63; border-bottom:2px solid #0b3d63; padding-bottom:3px; margin:18px 0 8px; }
+  h3 { font-size:12px; margin:12px 0 4px; color:#164a73; }
+  .sub { color:#555; font-size:11px; }
+  .cover { border:1px solid #d0d7de; border-radius:8px; padding:18px 20px; background:#f6f9fc; }
+  .cover table td { padding:2px 8px 2px 0; vertical-align:top; }
+  .cover td.k { color:#0b3d63; font-weight:600; white-space:nowrap; }
+  table.data { border-collapse:collapse; width:100%; margin:6px 0; }
+  table.data th, table.data td { border:1px solid #c8d1da; padding:4px 6px; text-align:left; vertical-align:top; }
+  table.data th { background:#0b3d63; color:#fff; font-weight:600; }
+  table.data tr:nth-child(even) td { background:#f2f6fa; }
+  .term { background:#0d1117; color:#c9d1d9; font-family:"Consolas","DejaVu Sans Mono",monospace;
+          font-size:9.5px; padding:10px 12px; border-radius:6px; white-space:pre-wrap; overflow-wrap:anywhere;
+          margin:6px 0; border:1px solid #30363d; }
+  .term .p { color:#7ee787; }        /* prompt */
+  .term .c { color:#79c0ff; }        /* comment */
+  .term .e { color:#ff7b72; }        /* error/bad */
+  .term .g { color:#f0f6fc; }
+  .cap { font-size:9px; color:#666; margin:0 0 10px; font-style:italic; }
+  .badge { display:inline-block; background:#e6f0f8; color:#0b3d63; border:1px solid #b9d3e6;
+           border-radius:10px; padding:1px 8px; font-size:9.5px; margin:1px 2px; }
+  .ok { color:#137333; font-weight:600; }
+  .bad { color:#b3261e; font-weight:600; }
+  ul { margin:4px 0 4px 18px; padding:0; }
+  li { margin:2px 0; }
+  .pagebreak { page-break-before: always; }
+  .small { font-size:9.5px; color:#555; }
+  code { background:#eef2f5; padding:0 3px; border-radius:3px; font-family:"Consolas",monospace; }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <h1>Práctica “Repo Auditable” — Arreglar versionado + registrar estados</h1>
+  <p class="sub">Informe de auditoría de configuración · Gestión de la Configuración del Software (GCS)</p>
+  <table>
+    <tr><td class="k">Asignatura</td><td>Gestión de la Configuración del Software</td></tr>
+    <tr><td class="k">Actividad</td><td>Semana 5 — Actividad 4 (3.1 Estados de configuración · 3.2 Gestión de versiones)</td></tr>
+    <tr><td class="k">Estudiante</td><td>ncuenca84 &nbsp;(ncuenca1984@gmail.com)</td></tr>
+    <tr><td class="k">Producto</td><td>API Inventario (mini) — <code>GET /products</code>, <code>POST /products</code></td></tr>
+    <tr><td class="k">Repositorio</td><td>https://github.com/ncuenca84/repo_auditable</td></tr>
+    <tr><td class="k">Trazabilidad</td><td>Issue #1 (ISSUE-21) · Pull Request #2 (merge <code>1e6245e</code>)</td></tr>
+    <tr><td class="k">Fecha</td><td>2026-08-25</td></tr>
+  </table>
+</div>
+
+<!-- RESUMEN -->
+<h2>1. Resumen</h2>
+<p>Se recibió un repositorio con un <em>release “medio fantasma”</em> y trazabilidad incompleta. La auditoría
+detectó versionado no conforme a SemVer, tags con formatos mezclados, un <strong>secreto versionado</strong>
+(<code>config/.env</code> con <code>API_KEY</code>), un commit no técnico (<em>“update stuff”</em>) y cambios sin
+referencia a un Issue. El objetivo de la corrección fue restaurar la integridad y la trazabilidad del producto:
+normalizar el versionado a SemVer, eliminar el secreto del control de versiones, vincular todos los cambios a un
+Issue y un Pull Request, actualizar el <code>CHANGELOG</code> por versión y completar el registro de estados de
+configuración (<em>Status Accounting</em>). Resultado: repositorio limpio, auditable y con tags coherentes
+<span class="badge">v1.0.0</span><span class="badge">v1.0.1</span><span class="badge">v1.1.0</span>.</p>
+
+<!-- HALLAZGOS -->
+<h2>2. Hallazgos (≥ 8)</h2>
+<table class="data">
+  <tr><th>#</th><th>Hallazgo</th><th>Evidencia inicial</th><th>Severidad</th></tr>
+  <tr><td>H1</td><td>Tag <code>v1.0</code> no cumple SemVer (falta PATCH)</td><td><code>git tag</code> → <span class="bad">v1.0</span></td><td>Media</td></tr>
+  <tr><td>H2</td><td>Formatos de tag mezclados (<code>v1.0</code> vs <code>release-1.1</code>)</td><td><code>git tag</code></td><td>Media</td></tr>
+  <tr><td>H3</td><td><strong>Secreto versionado</strong>: <code>config/.env</code> con <code>API_KEY=123456</code></td><td>commit <code>206dde1</code></td><td class="bad">Alta</td></tr>
+  <tr><td>H4</td><td>Commit no técnico <em>“update stuff”</em></td><td>commit <code>206dde1</code></td><td>Media</td></tr>
+  <tr><td>H5</td><td><code>feat: add filter date (no docs)</code> sin documentación/estado ni Issue</td><td>commit <code>7556263</code></td><td>Media</td></tr>
+  <tr><td>H6</td><td><code>fix: hotfix pagos 1%</code> sin referencia a Issue</td><td>commit <code>64aa1f6</code></td><td>Baja</td></tr>
+  <tr><td>H7</td><td>CHANGELOG sin entradas por versión con SemVer</td><td><code>CHANGELOG.md</code> inicial</td><td>Baja</td></tr>
+  <tr><td>H8</td><td>Sin registro de estados de configuración completo</td><td><code>CM_STATUS_REGISTER.md</code> inicial</td><td>Media</td></tr>
+  <tr><td>H9</td><td>Falta <code>.gitignore</code> y plantilla de PR (evidencia no forzada)</td><td>árbol del repo</td><td>Baja</td></tr>
+</table>
+
+<h3>Captura — historial y tags ANTES de corregir</h3>
+<div class="term"><span class="p">$ git log --oneline --decorate --graph</span>
+* 206dde1 (HEAD -&gt; main) <span class="e">update stuff</span>
+* 7556263 (tag: <span class="e">release-1.1</span>) <span class="e">feat: add filter date (no docs)</span>
+* 64aa1f6 <span class="e">fix: hotfix pagos 1%</span>
+* 9872cb8 (tag: <span class="e">v1.0</span>) chore: init baseline structure (ISSUE-20)
+
+<span class="p">$ git tag</span>
+<span class="e">release-1.1</span>      <span class="c"># formato inconsistente</span>
+<span class="e">v1.0</span>             <span class="c"># no es SemVer (debe ser v1.0.0)</span>
+
+<span class="p">$ git status</span>
+<span class="c"># config/.env versionado (secreto API_KEY)</span></div>
+<p class="cap">Captura 1: estado inicial problemático (git log / tag / status).</p>
+
+<!-- CORRECCIONES -->
+<div class="pagebreak"></div>
+<h2>3. Correcciones aplicadas</h2>
+<table class="data">
+  <tr><th>Hallazgo</th><th>Corrección</th><th>Evidencia</th></tr>
+  <tr><td>H1,H2</td><td>Eliminados tags inconsistentes; creados tags SemVer coherentes</td><td>v1.0.0 / v1.0.1 / v1.1.0</td></tr>
+  <tr><td>H3</td><td><code>git rm --cached config/.env</code> + <code>.env.example</code> + <code>.gitignore</code></td><td>commit <code>90ebfcf</code></td></tr>
+  <tr><td>H4</td><td>Commit “update stuff” corregido con commits técnicos trazables</td><td>PR #2</td></tr>
+  <tr><td>H5</td><td>REQ-003 documentado con criterios en SRS; baseline formal</td><td>commit <code>0cab1de</code></td></tr>
+  <tr><td>H6</td><td>Trazabilidad restaurada (<code>Refs #1</code> en commits/PR)</td><td>Issue #1 / PR #2</td></tr>
+  <tr><td>H7</td><td>CHANGELOG reorganizado por versión (SemVer, 2026)</td><td><code>CHANGELOG.md</code></td></tr>
+  <tr><td>H8</td><td>Registro de estados completado (10 EC)</td><td><code>CM_STATUS_REGISTER.md</code></td></tr>
+  <tr><td>H9</td><td>Añadidos <code>.gitignore</code> y <code>.github/pull_request_template.md</code></td><td>PR #2</td></tr>
+</table>
+
+<h3>Captura — historial, tags y estado DESPUÉS de corregir</h3>
+<div class="term"><span class="p">$ git log --oneline --decorate --graph</span>
+*   9a56fad (HEAD, tag: <span class="ok">v1.1.0</span>) docs: add post-audit evidence (ISSUE-21)
+*   1e6245e Merge PR #2: auditoria de versionado... (ISSUE-21)
+|\
+| * 5ede556 docs: update CHANGELOG (SemVer), status register, PR template (ISSUE-21)
+| * 0cab1de docs: document REQ-003 filter, define baseline (ISSUE-21)
+| * 90ebfcf chore: remove secret from repo, add env example + gitignore (ISSUE-21)
+|/
+* 206dde1 update stuff
+* 7556263 feat: add filter date (no docs)
+* 64aa1f6 (tag: <span class="ok">v1.0.1</span>) fix: hotfix pagos 1%
+* 9872cb8 (tag: <span class="ok">v1.0.0</span>) chore: init baseline structure (ISSUE-20)
+
+<span class="p">$ git tag -n1</span>
+<span class="ok">v1.0.0</span>   Baseline aprobada (estructura + SRS v1 + codigo + prueba)
+<span class="ok">v1.0.1</span>   Hotfix (patch retrocompatible, sin nuevas funciones)
+<span class="ok">v1.1.0</span>   REQ-003 filtro por fecha + correcciones de auditoria (ISSUE-21)
+
+<span class="p">$ git status</span>
+nothing to commit, working tree clean   <span class="ok"># repo integro</span>
+<span class="p">$ git ls-files config/</span>
+config/.env.example                      <span class="ok"># el secreto ya NO se versiona</span></div>
+<p class="cap">Captura 2: estado final corregido (git log / tag / status limpio).</p>
+
+<!-- VERSIONADO -->
+<h2>4. Versionado final (SemVer)</h2>
+<table class="data">
+  <tr><th>Tag</th><th>Commit</th><th>Tipo</th><th>Justificación SemVer</th></tr>
+  <tr><td><span class="ok">v1.0.0</span></td><td><code>9872cb8</code></td><td>Baseline</td><td>Primera línea base aprobada (estructura + REQ-001/002 + código + prueba).</td></tr>
+  <tr><td><span class="ok">v1.0.1</span></td><td><code>64aa1f6</code></td><td>PATCH</td><td>Hotfix retrocompatible, sin nuevas funciones (incremento de PATCH).</td></tr>
+  <tr><td><span class="ok">v1.1.0</span></td><td><code>9a56fad</code></td><td>MINOR</td><td>Nueva funcionalidad REQ-003 (filtro por fecha), retrocompatible (incremento de MINOR).</td></tr>
+</table>
+<p class="small"><strong>Nota de auditoría:</strong> el hotfix (v1.0.1) se ordena antes de la nueva funcionalidad (v1.1.0)
+para mantener la monotonía de SemVer: un PATCH no puede contener una funcionalidad que introduce el MINOR siguiente.
+Un cambio incompatible de contrato habría exigido v2.0.0.</p>
+
+<!-- REGISTRO DE ESTADOS -->
+<h2>5. Registro de estados (CM_STATUS_REGISTER.md)</h2>
+<table class="data">
+  <tr><th>EC-ID</th><th>Elemento</th><th>Tipo</th><th>Versión/Ref</th><th>Estado</th><th>Evidencia</th></tr>
+  <tr><td>EC-01</td><td>docs/SRS/SRS_v1.md</td><td>Doc</td><td>v1.1.0</td><td>Baselined</td><td>commit + tag</td></tr>
+  <tr><td>EC-02</td><td>src/app.py</td><td>Code</td><td>v1.0.0 (9872cb8)</td><td>Integrado</td><td>commit + tag</td></tr>
+  <tr><td>EC-03</td><td>tests/test_app.py</td><td>Test</td><td>v1.0.0</td><td>Verificado</td><td>pytest: 1 passed</td></tr>
+  <tr><td>EC-04</td><td>CHANGELOG.md</td><td>Doc</td><td>v1.1.0</td><td>Aprobado</td><td>commit + release</td></tr>
+  <tr><td>EC-05</td><td>.gitignore</td><td>Config</td><td>90ebfcf</td><td>Aprobado</td><td>commit (ISSUE-21)</td></tr>
+  <tr><td>EC-06</td><td>config/.env.example</td><td>Config</td><td>90ebfcf</td><td>Integrado</td><td>commit (ISSUE-21)</td></tr>
+  <tr><td>EC-07</td><td>.github/pull_request_template.md</td><td>Process</td><td>v1.1.0</td><td>Aprobado</td><td>PR #2</td></tr>
+  <tr><td>EC-08</td><td>README.md</td><td>Doc</td><td>v1.0.0</td><td>Baselined</td><td>tag + release</td></tr>
+  <tr><td>EC-09</td><td>docs/CM/BASELINE.md</td><td>Doc</td><td>v1.1.0 (0cab1de)</td><td>Aprobado</td><td>commit (ISSUE-21)</td></tr>
+  <tr><td>EC-10</td><td>config/.env (secreto)</td><td>Config</td><td>—</td><td class="bad">Retirado</td><td>git rm --cached (90ebfcf)</td></tr>
+</table>
+
+<!-- CONCLUSION -->
+<h2>6. Conclusión</h2>
+<p>Contar con <strong>estados de configuración + versiones coherentes</strong> reduce riesgos concretos:
+(1) <em>Seguridad</em> — se elimina la exposición de secretos versionados; (2) <em>Integridad del release</em> —
+SemVer y tags/releases evitan el “release fantasma” y permiten reproducir cualquier versión entregada;
+(3) <em>Trazabilidad</em> — cada cambio se vincula a un Issue y un PR, de modo que se sabe <em>qué</em> cambió,
+<em>por qué</em> y <em>con qué evidencia</em>; (4) <em>Control de cambios</em> — el registro de estados
+(<em>Status Accounting</em>) da visibilidad del estado de cada elemento de configuración. En una auditoría real,
+si no hay evidencia, el cambio no existió: este repositorio ahora la tiene.</p>
+
+<p class="small"><strong>Anexo — pendiente manual:</strong> por política de red del entorno de ejecución, el
+<code>git push</code> de tags está bloqueado (los tags están creados localmente y correctos). Para publicarlos
+como Releases: GitHub → <em>Releases</em> → <em>Draft a new release</em> → crear tag <code>v1.0.0</code>,
+<code>v1.0.1</code> y <code>v1.1.0</code> sobre los commits indicados en la sección 4; o desde una máquina con
+credenciales completas: <code>git push origin v1.0.0 v1.0.1 v1.1.0</code>.</p>
+
+</body>
+</html>
