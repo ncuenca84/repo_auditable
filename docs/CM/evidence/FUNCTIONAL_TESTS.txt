@@ -1,0 +1,13 @@
+$ python -m pytest -v
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /home/user/repo_auditable
+collecting ... collected 4 items
+
+tests/test_app.py::test_add_and_list PASSED                              [ 25%]
+tests/test_req002.py::test_criterio_1_agrega_qty_positiva PASSED         [ 50%]
+tests/test_req002.py::test_criterio_2_permite_qty_cero PASSED            [ 75%]
+tests/test_req002.py::test_criterio_3_rechaza_qty_negativa PASSED        [100%]
+
+============================== 4 passed in 0.03s ===============================
