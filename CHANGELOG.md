@@ -6,6 +6,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/).
 ## [Unreleased]
 - (sin cambios pendientes)
 
+## [v1.2.0] - 2026-08-25
+### Added
+- Auditoría física de config items + `LICENSE` (MIT). (#3, PR #7)
+- Auditoría funcional de REQ-002 con 3 criterios de aceptación y pruebas. (#4, PR #8)
+- Convención de trazabilidad (`docs/CM/TRAZABILIDAD.md`) y `CHECKLIST_AUDITORIA.md`. (#5, PR #9)
+- `docs/CM/RELEASE_NOTES_v1.2.0.md` y `DOC_ENTREGA.md`. (#6, PR #10)
+### Notes
+- Emisión controlada desde la línea base `main` con revisión por PR.
+
 ## [v1.1.0] - 2026-08-25
 ### Added
 - REQ-003: filtrar productos por fecha de alta (documentado en SRS v1). (Refs ISSUE-21)
