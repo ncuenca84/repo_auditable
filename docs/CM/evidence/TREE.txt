@@ -1,0 +1,32 @@
+$ git ls-files | tree-like
+
+  |pull_request_template.md
+.gitignore
+CHANGELOG.md
+CM_STATUS_REGISTER.md
+README.md
+  |.env.example
+  |  |BASELINE.md
+  |  |  |BEFORE.txt
+  |  |  |TESTS.txt
+  |  |SRS_v1.md
+  |__init__.py
+  |app.py
+  |__init__.py
+  |test_app.py
+
+$ find (solo versionado)
+.github/pull_request_template.md
+.gitignore
+CHANGELOG.md
+CM_STATUS_REGISTER.md
+README.md
+config/.env.example
+docs/CM/BASELINE.md
+docs/CM/evidence/BEFORE.txt
+docs/CM/evidence/TESTS.txt
+docs/SRS/SRS_v1.md
+src/__init__.py
+src/app.py
+tests/__init__.py
+tests/test_app.py

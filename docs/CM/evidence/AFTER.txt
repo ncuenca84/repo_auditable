@@ -1,0 +1,29 @@
+$ git status
+On branch claude/repo-auditable-versionado-lbf0ng
+Your branch is up to date with 'origin/claude/repo-auditable-versionado-lbf0ng'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/CM/evidence/AFTER.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+$ git log --oneline --decorate --graph
+*   1e6245e (HEAD -> claude/repo-auditable-versionado-lbf0ng, tag: v1.1.0, origin/claude/repo-auditable-versionado-lbf0ng) Merge PR #2: auditoría de versionado, secretos y trazabilidad (ISSUE-21)
+|\  
+| * 5ede556 (origin/fix/ISSUE-21-auditoria-versionado, fix/ISSUE-21-auditoria-versionado) docs: update CHANGELOG (SemVer), complete status register, add PR template (ISSUE-21)
+| * 0cab1de docs: document REQ-003 filter, define formal baseline (ISSUE-21)
+| * 90ebfcf chore: remove secret from repo, add env example and gitignore (ISSUE-21)
+|/  
+* 206dde1 update stuff
+* 7556263 feat: add filter date (no docs)
+* 64aa1f6 (tag: v1.0.1) fix: hotfix pagos 1%
+* 9872cb8 (tag: v1.0.0) chore: init baseline structure (ISSUE-20)
+
+$ git tag -n1
+v1.0.0          v1.0.0 - Baseline aprobada (estructura + SRS v1 + codigo + prueba)
+v1.0.1          v1.0.1 - Hotfix (patch retrocompatible, sin nuevas funciones)
+v1.1.0          v1.1.0 - REQ-003 filtro por fecha + correcciones de auditoria (ISSUE-21)
+
+$ git ls-files config/    # (config/.env NO aparece: fuera del tracking)
+config/.env.example
