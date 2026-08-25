@@ -1,0 +1,17 @@
+$ git status
+On branch claude/repo-auditable-versionado-lbf0ng
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/CM/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+$ git log --oneline --decorate --graph
+* 206dde1 (HEAD -> claude/repo-auditable-versionado-lbf0ng) update stuff
+* 7556263 (tag: release-1.1) feat: add filter date (no docs)
+* 64aa1f6 fix: hotfix pagos 1%
+* 9872cb8 (tag: v1.0) chore: init baseline structure (ISSUE-20)
+
+$ git tag
+release-1.1
+v1.0

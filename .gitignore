@@ -1,0 +1,16 @@
+# Secretos y configuración local (NUNCA versionar)
+config/.env
+*.env
+!config/.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# SO / editor
+.DS_Store
+.idea/
+.vscode/
